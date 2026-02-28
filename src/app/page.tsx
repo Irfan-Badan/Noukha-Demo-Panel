@@ -15,6 +15,34 @@ export default function Home() {
 
   useEffect(() => {
     setMounted(true);
+
+    const checkServerStatus = async () => {
+      // Check SFA Server
+      try {
+        const sfaRes = await fetch("https://api-sfa.noukha.in/api/noukha-mdm-service/health");
+        setSfaLive(sfaRes.ok);
+      } catch (err) {
+        setSfaLive(false);
+      }
+
+      // Check AI Server
+      try {
+        const aiRes = await fetch("https://ai.noukha.in/ocr/api/health");
+        setAiLive(aiRes.ok);
+      } catch (err) {
+        setAiLive(false);
+      }
+    };
+
+    // Initial check on load
+    checkServerStatus();
+
+    // Poll every 30 seconds to keep UI in sync with backend
+    const interval = setInterval(() => {
+      checkServerStatus();
+    }, 30000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const callApi = async (body: any, key: string, onSuccess: () => void) => {
@@ -111,7 +139,7 @@ export default function Home() {
         <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="flex-grow boot-animation" style={{ animationDelay: '0.1s' }}>
             <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
-               Server <span className="gradient-text">Control Center</span>
+              Server <span className="gradient-text">Control Center</span>
             </h1>
             <p className="text-zinc-400 max-w-xl text-lg">
               Manage and monitor independent environments for SFA and AI products.
