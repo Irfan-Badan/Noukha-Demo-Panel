@@ -11,7 +11,7 @@ export default function Home() {
   const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
   const [status, setStatus] = useState<{ msg: string; type: 'success' | 'error' | null }>({ msg: '', type: null });
 
-  const API_URL = "https://bhrjk2lvcmjyhflzdg3skw5exy0sufta.lambda-url.ap-south-1.on.aws/";
+  const API_URL = "https://cjc43qk5d6o2ftzkngskpjp3dy0suvmi.lambda-url.ap-south-1.on.aws/";
 
   useEffect(() => {
     setMounted(true);
